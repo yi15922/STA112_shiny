@@ -9,9 +9,8 @@ players1 <- read_csv("data/players1.csv")
 
 # UI ---------------------------------------------------------------------------
 ui <- fluidPage(
-  theme = shinytheme("cerulean")
+  theme = shinytheme("cerulean"),
         titlePanel("Players browser"),
-                
         sidebarLayout(
             sidebarPanel(
                 selectInput(inputId = "y", 
