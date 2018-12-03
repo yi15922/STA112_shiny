@@ -1,5 +1,5 @@
 ---
-title: "TITLE"
+title: "Soccer Players Data Visualization"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -10,7 +10,10 @@ runtime: shiny
 ```{r load-packages, include=FALSE}
 library(flexdashboard)
 library(shiny)
+library(tools)
 library(tidyverse)
+library(shinythemes)
+library(rsconnect)
 ```
 
 ```{r load-data, include = FALSE}
@@ -22,24 +25,102 @@ players <- read_csv("data/players1.csv")
 Sidebar {.sidebar}
 =======================================================================
 
+Click on the menus below to choose a combination variables to visualize. 
 
+```{r choices}
+theme = shinytheme("cerulean")
 
-Pane 1
+selectInput(inputId = "y", 
+                        label = "Y-axis:",
+                        choices = c("Position" = "position", 
+                                    "Age" = "age", 
+                                    "Matches" = "matches", 
+                                    "Goals" = "goals",
+                                    "Own Goals" = "own_goals",
+                                    "Assists" = "assists",
+                                    "Yellow Cards" = "yellow_cards",
+                                    "Red Cards" = "red_cards",
+                                    "Substituted On" = "substituted_on",
+                                    "Substituted Off" = "substituted_off",
+                                    "Market Value" = "market_value",
+                                    "Age Range" = "age_range"), 
+                        selected = "position")
+
+                selectInput(inputId = "x", 
+                        label = "X-axis:",
+                        choices = c("Position" = "position", 
+                                    "Age" = "age", 
+                                    "Matches" = "matches", 
+                                    "Goals" = "goals",
+                                    "Own Goals" = "own_goals",
+                                    "Assists" = "assists",
+                                    "Yellow Cards" = "yellow_cards",
+                                    "Red Cards" = "red_cards",
+                                    "Substituted On" = "substituted_on",
+                                    "Substituted Off" = "substituted_off",
+                                    "Market Value" = "market_value",
+                                    "Age Range" = "age_range"), 
+                         selected = "market_value")
+                
+                selectInput(inputId = "z", 
+                         label = "Color by:",
+                         choices = c("Position" = "position", 
+                                     "Age" = "age", 
+                                     "Matches" = "matches", 
+                                     "Goals" = "goals",
+                                     "Own Goals" = "own_goals",
+                                     "Assists" = "assists",
+                                     "Yellow Cards" = "yellow_cards",
+                                     "Red Cards" = "red_cards",
+                                     "Substituted On" = "substituted_on",
+                                     "Substituted Off" = "substituted_off",
+                                     "Market Value" = "market_value",
+                                     "Age Range" = "age_range"), 
+                           selected = "age")
+
+```
+
+Scatter vs. Jitter
 =======================================================================
 
 Row
 -----------------------------------------------------------------------
 
-Row 1
+### Scatterplot
 
-Row
------------------------------------------------------------------------
+```{r plot}
 
-Row 2
------------------------------------------------------------------------
-Row 2
+  output$scatterplot <- renderPlot({
+    ggplot(data = players, aes_string(x = input$x, y = input$y,
+                                       color = input$z)) +
+      geom_point() +
+      labs(x = toTitleCase(str_replace_all(input$x, "_", " ")),
+           y = toTitleCase(str_replace_all(input$y, "_", " ")),
+           color = toTitleCase(str_replace_all(input$z, "_", " ")))
+  })
+  
+plotOutput(outputId = "scatterplot")
 
-Pane 2
+```
+
+### Scatterplot with jitter
+
+```{r plot_jitter}
+
+  output$scatterplotjitter <- renderPlot({
+    ggplot(data = players, aes_string(x = input$x, y = input$y,
+                                       color = input$z)) +
+      geom_jitter() +
+      labs(x = toTitleCase(str_replace_all(input$x, "_", " ")),
+           y = toTitleCase(str_replace_all(input$y, "_", " ")),
+           color = toTitleCase(str_replace_all(input$z, "_", " ")))
+  })
+  
+plotOutput(outputId = "scatterplotjitter")
+
+```
+
+Explanation 
 =======================================================================
 
-some content...
+Jitter slightly shifts each data point in a scatter plot to reveal overlapping data points. This is especially useful when visualizing categorical data where many data points might be in the same place. 
