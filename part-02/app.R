@@ -1,4 +1,6 @@
 # Load packages ----------------------------------------------------------------
+install.packages("shinythemes")
+
 library(shiny)
 library(tidyverse)
 library(tools)
@@ -9,7 +11,7 @@ players1 <- read_csv("data/players1.csv")
 
 # UI ---------------------------------------------------------------------------
 ui <- fluidPage(
-  theme = shinytheme("cerulean"),
+  theme = shinytheme("cyborg"),
         titlePanel("Players browser"),
         sidebarLayout(
             sidebarPanel(
