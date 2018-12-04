@@ -15,9 +15,12 @@ ui <- fluidPage(
         label = "Y-axis:",
         choices = c(
           "Carat" = "carat",
-          "Depth" = "depth",
+          "Depth percentage" = "depth",
           "Table" = "table",
-          "Price" = "price"
+          "Price" = "price",
+          "Length" = "x",
+          "Width" = "y",
+          "Depth" = "z"
         ),
         selected = "carat"
       ),
@@ -26,9 +29,12 @@ ui <- fluidPage(
         label = "X-axis:",
         choices = c(
           "Carat" = "carat",
-          "Depth" = "depth",
+          "Depth percentage" = "depth",
           "Table" = "table",
-          "Price" = "price"
+          "Price" = "price",
+          "Length" = "x",
+          "Width" = "y",
+          "Depth" = "z"
         ),
         selected = "depth"
       ),
